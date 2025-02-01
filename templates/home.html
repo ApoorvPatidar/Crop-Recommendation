@@ -1,0 +1,110 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Crop Recommendation Form</title>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/water.css@2/out/water.css">
+    <style>
+        /* Additional custom styling can go here */
+        
+        .myform {
+            max-width: 400px;
+            margin: 0 auto;
+            padding: 20px;
+            background-color: #000000;
+            border-radius: 10px;
+            box-sizing: border-box;
+            /* Add this line */
+        }
+        
+        .myform h3 {
+            margin-top: 10px;
+            margin-bottom: 5px;
+            color: rgb(255, 255, 255);
+        }
+        
+        .myform input[type="text"] {
+            width: calc(100% - 16px);
+            /* Adjusted width to consider padding */
+            padding: 8px;
+            margin-bottom: 10px;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+            box-sizing: border-box;
+            /* Add this line */
+        }
+        
+        #results {
+            margin-top: 20px;
+            border: 1px solid #ccc;
+            padding: 10px;
+            border-radius: 5px;
+            display: none;
+        }
+    </style>
+</head>
+
+<body style="background-color: #141414; color: white;">
+    <form class="myform" id="cropForm" action="/" method="POST">
+    <marquee behavior="" direction="right">
+        <h1 style="color: white;">CROP RECOMMENDATION!!!</h1>
+    </marquee>
+
+        <h3>Nitrogen</h3>
+        <input type="text" name="Nitrogen" required>
+        <h3>Phosphorus</h3>
+        <input type="text" name="Phosphorus" required>
+        <h3>Potassium</h3>
+        <input type="text" name="Potassium" required>
+        <h3>Temperature</h3>
+        <input type="text" name="temperature" required>
+        <h3>Humidity</h3>
+        <input type="text" name="humidity" required>
+        <h3>pH</h3>
+        <input type="text" name="ph" required>
+        <h3>Rainfall</h3>
+        <input type="text" name="rainfall" required>
+        <button class="btn #42a5f5 blue lighten-1" type="submit">Submit</button>
+        
+        <div id="results">
+            <p>RECOMMENDED CROP FOR YOU IS</p>
+            <p id="resultText"></p>
+        </div>
+        
+    </form>
+    <script>
+        // Get the form and results elements
+        const form = document.getElementById('cropForm');
+        const results = document.getElementById('results');
+        const resultText = document.getElementById('resultText');
+
+        // Add an event listener for the form submission
+        form.addEventListener('submit', (event) => {
+            // Prevent the form from submitting normally
+            event.preventDefault();
+
+            // Get the form data
+            const formData = new FormData(form);
+
+            // Send the form data to the server using AJAX
+            const xhr = new XMLHttpRequest();
+            xhr.open('POST', '/');
+            xhr.onload = () => {
+                if (xhr.status === 200) {
+                    // If the server returns a success response, display the results
+                    results.style.display = 'block';
+                    resultText.textContent = xhr.responseText;
+                } else {
+                    // If the server returns an error response, display an error message
+                    results.style.display = 'block';
+                    resultText.textContent = 'An error occurred. Please try again later.';
+                }
+            };
+            xhr.send(formData);
+        });
+    </script>
+</body>
+
+</html>
